@@ -1,0 +1,104 @@
+<h1 class="heading"> View Task</h1>
+<!-- <button class="btn" (click)="search()">Click here List</button> -->
+<div class="container">
+    <table>
+        <tr>
+            <th>Task name:</th>
+            <td>
+                <input type="text" placeholder="SearchTask" style="width:120px;" [(ngModel)]="searchTask">
+            </td>
+            <th>ParentTask:</th>
+            <td>
+                <input type="text" placeholder="SearchParentTask" style="width:120px;" [(ngModel)]="SearchParentTask">
+            </td>
+        </tr>
+        <tr>
+            <th>PriorityFrom:</th>
+            <td>
+                <input type="text" placeholder="Search from" style="width:120px;" [(ngModel)]="searchfrom" >
+            </td>
+            <th>PriorityTo:</th>
+            <td>
+                <input type="text" placeholder="searchto" style="width:120px;" [(ngModel)]="searchto">
+            </td>
+        </tr>
+        <tr>
+            <th>StartDate:</th>
+            <td>
+                <input type="date"  style="width:120px;" [(ngModel)]="item.start_date" (ngModelChange) ='SearchBySDate($event)'>
+
+            </td>
+            <th>EndDate:</th>
+            <td>
+                <input type="date"  style="width:120px;" [(ngModel)]="item.enddate"  (ngModelChange) ='SearchByEDate($event)'>
+
+            </td>
+
+        </tr>
+    </table>
+
+    <br/>
+    <table>
+        <thead>
+            <tr>
+                <th>TaskID</th>
+                <th>ParentTask</th>
+                <th>TaskName</th>
+                <th>Priority</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th></th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of pagedItems | TaskFilter:searchTask  |TaskFilter1:SearchParentTask| TaskFilter2:searchfrom | TaskFilter3:searchto" >
+                 <td>{{item.taskId}}</td>
+                <td *ngIf="item.parentTask !== null" >{{item.parentTask.parentTask}}</td>
+                <td *ngIf="item.parentTask == null" ></td>
+                <td>{{item.task}}</td>
+                <td>{{item.priority}}</td>
+                <td>{{item.startDate |date:'yyyy-MM-dd'}}</td>
+                <td>{{item.endDate |date:'yyyy-MM-dd'}}</td>
+                <td>
+
+                    <div >
+                        <button  id="{{item.taskId}}" class="btn btn-info" (click)="Edit(item.taskId)" [disabled] ="item.isTaskEnded == 'True'">Edit</button>
+                    </div>
+                    <div style="margin-left:60px;margin-top:-35px;">
+                        <button id="{{item.taskId}}"  class="btn btn-warning" (click)="END(item)" [disabled] ="item.isTaskEnded == 'True'">END Task</button>
+                    </div>
+                    <div  style="margin-left:160px;margin-top:-35px;">
+                      <button  class="btn btn-danger" (click)="Delete(item.taskId)" [disabled] ="item.isTaskEnded == 'false'">Delete</button>
+                  </div>
+
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="avv">
+        <nav>
+            <ul *ngIf="pager.pages && pager.pages.length" class="pagination qn">
+                <li [ngClass]="{disabled:pager.currentPage === 1}" class="qp">
+                    <a (click)="setPage(1)" class="qo">First</a>
+                </li>
+                <li [ngClass]="{disabled:pager.currentPage === 1}" class="qp">
+                    <a (click)="setPage(pager.currentPage - 1)" class="qo">Previous</a>
+                </li>
+                <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}" class="qp">
+                    <a (click)="setPage(page)" class="qo">{{page}}</a>
+                </li>
+                <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}" class="qp">
+                    <a (click)="setPage(pager.currentPage + 1)" class="qo">Next</a>
+                </li>
+                <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}" class="qp">
+                    <a (click)="setPage(pager.totalPages)" class="qo">Last</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+

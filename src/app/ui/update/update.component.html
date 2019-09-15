@@ -1,0 +1,42 @@
+<h2 class="heading">Update Task</h2>
+<div class="container" style="position: absolute; left: 320px;">
+  <table>
+    <tr>
+      <th>Task Name</th>
+      <td><input type="text" class="form-control" #TaskName="ngModel" name="task" required [(ngModel)]="item.task">
+      <!-- <span ngif="TaskName.invalid && (TaskName.dirty || submitted)">
+          <div [hidden]="!TaskName.hasError('required')">Task Name is required</div>
+      </span> -->
+      </td>
+    </tr>
+    <tr>
+      <th>Priority</th>
+      <td><input type="range" #pr="ngModel" [(ngModel)]="item.priority" min="1" max="30" step="1" value="0"></td>
+    </tr>
+    <tr>
+
+      <th>Parent Task Name</th>
+      <td>
+          <select class="form-control" #ParentID="ngModel" [(ngModel)]="item.parentid">
+              <option *ngFor="let item of taskList" value={{item.task}}>
+                {{item.parentTask.parentTask}}
+                </option>
+          </select>
+      </td>
+    </tr>
+    <tr>
+      <th>StartDate</th>
+      <td><input type="text" class="form-control" [(ngModel)]="item.startDate"></td>
+    </tr>
+    <tr>
+      <th>EndDate</th>
+      <td><input type="text" class="form-control" [(ngModel)]="item.endDate"></td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <button class="btn btn-info" (click)="Update()">UpdateTask</button>
+        <button class="btn btn-info" (click)="Cancel()">Cancel</button>
+      </td>
+    </tr>
+  </table>
+</div>
